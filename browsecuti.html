@@ -143,6 +143,16 @@
                         table { border-collapse: collapse; width: 100%; margin-top: 5px; border: none !important;}
                         th, td { border: 1px solid #ddd; padding: 8px; }
                         th { background-color: #f2f2f2; text-align: left; }
+			.container {
+			  display: grid;
+			  grid-template-columns: repeat(3, 1fr);
+			  gap: 20px; /* Jarak antara kolom */
+			}
+
+.column {
+  padding: 10px;
+  border: 1px solid #ccc; /* Optional: untuk memberikan border pada kolom */
+}
                     </style>
                 </head>
                 <body>
@@ -150,9 +160,15 @@
 <p><span style="font-weight: 400;">&nbsp;</span></p>
 <p><span style="font-weight: 400;">Yth. Kepala KPPN Lhokseumawe </span><span style="font-weight: 400;"><br /></span><span style="font-weight: 400;"> di Lhokseumawe</span></p>
 <p><span style="font-weight: 400;">&nbsp;</span></p>
-<p><span style="font-weight: 400;">Yang bertanda tangan di bawah ini:</span></p>
-<p><span style="font-weight: 400;">Nama</span> <span style="font-weight: 400;">: ${rowData?.[1] || '-'}</span></p>
-<p><span style="font-weight: 400;">Jabatan </span> <span style="font-weight: 400;">: ${rowData?.[2] || '-'}</span></p>
+<p><span style="font-weight: 400;">Yang bertanda tangan dibawah ini:</span></p>
+<div class="container">
+	<div class="column">Nama</div>
+ 	<div class="column">: ${rowData?.[1] || '-'}</div>
+</div>
+<div class="container">
+	<div class="column">Jabatan</div>
+ 	<div class="column">: ${rowData?.[2] || '-'}</div>
+</div>
 <p><span style="font-weight: 400;">Unit </span> <span style="font-weight: 400;">: KPPN Lhokseumawe</span></p>
 <p><span style="font-weight: 400;">Alamat</span> <span style="font-weight: 400;">: Pasar Inpres Kota Lhokseumawe&nbsp;</span></p>
 <p><span style="font-weight: 400;">&nbsp;</span></p>
