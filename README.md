@@ -1,0 +1,1 @@
+Pemanasan buat simple simple
