@@ -53,9 +53,6 @@
                 headerRow.appendChild(th);
             });
 
-            const actionTh = document.createElement("th");
-            actionTh.textContent = "Aksi";
-            headerRow.appendChild(actionTh);
 
             const tableBody = document.getElementById("table-body");
             body.forEach((row, rowIndex) => {
@@ -65,12 +62,6 @@
                     td.textContent = cell || "-";
                     tr.appendChild(td);
                 });
-
-                const actionTd = document.createElement("td");
-                actionTd.innerHTML = `
-                    <button class="crud-btn btn-edit" onclick="viewRow(${rowIndex})">Cetak</button>
-                `;
-                tr.appendChild(actionTd);
 
                 tableBody.appendChild(tr);
             });
