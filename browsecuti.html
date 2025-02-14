@@ -109,7 +109,7 @@
                     <style>
                         body { font-family: Arial, sans-serif; margin: 20px; }
                         table { border-collapse: collapse; width: 100%; margin-top: 5px; border: none !important;}
-                        th, td { border: 1px solid #ddd; padding: 8px; }
+                        th, td { padding: 8px; }
                         th { background-color: #f2f2f2; text-align: left; }
 			.container {
 			  display: grid;
@@ -137,9 +137,15 @@
 	<div class="column">Jabatan</div>
  	<div class="column">: ${rowData?.[2] || '-'}</div>
 </div>
-<p><span style="font-weight: 400;">Unit </span> <span style="font-weight: 400;">: KPPN Lhokseumawe</span></p>
-<p><span style="font-weight: 400;">Alamat</span> <span style="font-weight: 400;">: Pasar Inpres Kota Lhokseumawe&nbsp;</span></p>
-<p><span style="font-weight: 400;">&nbsp;</span></p>
+<div class="container">
+	<div class="column">Unit</div>
+ 	<div class="column">: KPPN Lhokseumawe</div>
+</div>
+<div class="container">
+	<div class="column">Alamat</div>
+ 	<div class="column">: Jalan Merdeka No.47 Banda Sakti, Lhokseumawe</div>
+</div>
+
 <p><span style="font-weight: 400;">Dengan ini mengajukan Cuti Tahunan 2025 selama ${rowData?.[4] || '-'} hari kerja pada tanggal ${rowData?.[5] || '-'} dikarenakan ada ${rowData?.[6] || '-'}, selama menjalankan cuti tahunan alamat saya di ${rowData?.[7] || '-'}.</span></p>
 <p><span style="font-weight: 400;">Demikian permintaan cuti tahunan ini saya buat untuk dapat dipertimbangkan sebagaimana mestinya.</span></p>
 
