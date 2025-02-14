@@ -15,7 +15,12 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 </head>
 <body class="hold-transition sidebar-mini">
-  <div class="wrapper">
+  <div id="login-container" style="text-align:center; margin-top: 20%; display: none;">
+    <h2>Login Admin</h2>
+    <button class="btn btn-primary" onclick="signInWithGoogle()">Login dengan Google</button>
+  </div>
+  
+  <div id="admin-container" class="wrapper" style="display: none;">
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
       <ul class="navbar-nav">
@@ -87,7 +92,7 @@
       messagingSenderId: "478677448463",
       appId: "1:478677448463:web:9331a36d7f174c8eb9f07a"
     };
-
+    
 
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
@@ -109,6 +114,16 @@
         console.error("Error signing out: ", error);
       });
     }
+
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        document.getElementById('login-container').style.display = 'none';
+        document.getElementById('admin-container').style.display = 'block';
+      } else {
+        document.getElementById('login-container').style.display = 'block';
+        document.getElementById('admin-container').style.display = 'none';
+      }
+    });
 
     $(document).ready(function() {
       $('#menu-toggle').on('click', function(e) {
