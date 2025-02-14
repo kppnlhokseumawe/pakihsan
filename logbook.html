@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logbook RT Selaras</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+</head>
+<body>
+    <h1>Logbook KPPN Lhoks</h1>
+    <input type="text" id="table-filter" placeholder="Cari di tabel..." style="margin-bottom: 10px; padding: 5px; width: 100%;">
+    <table id="data-table" class="display" style="width:100%">
+        <thead>
+            <tr id="table-header"></tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+    </table>
+
+    <script>
+        const spreadsheetId = "1aVJRpZa9wIsnLY26I7IHHJ7QcjrAEafSiVj-cEnygUk";
+        const apiKey = "AIzaSyAkeRjFXNe9Tm5bBMCppS4hFLdengV7Q0M";
+        const sheetName = "Logbook";
+        const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?key=${apiKey}`;
+
+        async function fetchGoogleSheet() {
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error("Gagal mengambil data.");
+                }
+                const data = await response.json();
+                renderTable(data.values || []);
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+
+        function renderTable(data) {
+            if (!data || data.length === 0) {
+                console.warn("Tidak ada data untuk dirender.");
+                return;
+            }
+
+            const header = data[0];
+            const body = data.slice(1);
+
+            const headerRow = document.getElementById("table-header");
+            header.forEach(cell => {
+                const th = document.createElement("th");
+                th.textContent = cell || "-";
+                headerRow.appendChild(th);
+            });
+
+            const actionTh = document.createElement("th");
+            actionTh.textContent = "Aksi";
+            headerRow.appendChild(actionTh);
+
+            const tableBody = document.getElementById("table-body");
+            body.forEach((row, rowIndex) => {
+                const tr = document.createElement("tr");
+                row.forEach(cell => {
+                    const td = document.createElement("td");
+                    td.textContent = cell || "-";
+                    tr.appendChild(td);
+                });
+
+                const actionTd = document.createElement("td");
+                actionTd.innerHTML = `
+                    <button class="crud-btn btn-edit" onclick="viewRow(${rowIndex})">Cetak</button>
+                `;
+                tr.appendChild(actionTd);
+
+                tableBody.appendChild(tr);
+            });
+
+            const table = $('#data-table').DataTable({
+                paging: true,
+                searching: true,
+                info: true,
+                order: [[0, 'asc']],
+                dom: 'lrtip'
+            });
+
+            $('#table-filter').on('keyup', function () {
+                table.search(this.value).draw();
+            });
+        }
+
+        function viewRow(rowIndex, isDelete = false) {
+            const table = $('#data-table').DataTable();
+            const rowData = table.row(rowIndex).data();
+
+            // Membuat halaman HTML untuk data
+            const newWindow = window.open('', '_blank');
+            newWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Detil Logbook</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+                        th, td { border: 1px solid #ddd; padding: 8px; }
+                        th { background-color: #f2f2f2; text-align: left; }
+                    </style>
+                </head>
+                <body>
+                    
+                    <table>
+                       
+                        <tbody>
+                            <tr>${rowData.map(cell => `<td>${cell || '-'}</td>`).join('')}</tr>
+                        </tbody>
+                    </table>
+                    }
+                </body>
+                </html>
+            `);
+            newWindow.document.close();
+        }
+
+        fetchGoogleSheet();
+    </script>
+</body>
+</html>
