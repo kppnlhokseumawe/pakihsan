@@ -73,8 +73,13 @@
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
+    // function loadPage(page) {
+    //   document.getElementById('contentFrame').src = page;
+    // }
     function loadPage(page) {
-      document.getElementById('contentFrame').src = page;
+        let timestamp = new Date().getTime();
+        let separator = page.includes('?') ? '&' : '?';
+        document.getElementById('contentFrame').src = page + separator + "t=" + timestamp;
     }
   </script>
 </body>
