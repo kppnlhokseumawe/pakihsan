@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard</title>
+  <title>Admin Pa RT San</title>
   <!-- AdminLTE CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
   <!-- Font Awesome Icons -->
@@ -29,6 +29,12 @@
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item">
+              <a href="#dashboard" class="nav-link active" onclick="loadPage('dashboard.html')">
+                <i class="nav-icon fas fa-dashboard"></i>
+                <p>Dashboard</p>
+              </a>
+            </li>
+            <li class="nav-item">
               <a href="#logbook" class="nav-link active" onclick="loadPage('logbook.html')">
                 <i class="nav-icon fas fa-book"></i>
                 <p>Logbook</p>
@@ -36,7 +42,7 @@
             </li>
             <li class="nav-item">
               <a href="#cuti" class="nav-link" onclick="loadPage('browsecuti.html')">
-                <i class="nav-icon fas fa-calendar-alt"></i>
+                <i class="nav-icon fas fa-user"></i>
                 <p>Cuti</p>
               </a>
             </li>
@@ -53,12 +59,12 @@
 
     <!-- Content Wrapper -->
     <div class="content-wrapper">
-      <iframe id="contentFrame" src="logbook.html" style="width: 100%; height: 100vh; border: none;"></iframe>
+      <iframe id="contentFrame" src="dashboard.html" style="width: 100%; height: 100vh; border: none;"></iframe>
     </div>
 
     <!-- Footer -->
     <footer class="main-footer">
-      <strong>Copyright &copy; 2025 Admin Dashboard.</strong> All rights reserved.
+      <strong>Copyright &copy; 2025 KPPN Lhokseumawe</strong> All rights reserved.
     </footer>
   </div>
 
