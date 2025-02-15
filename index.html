@@ -10,21 +10,20 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+   function loadPage(page) {
+      let timestamp = new Date().getTime();
+      let separator = page.includes('?') ? '&' : '?';
+      document.getElementById('contentFrame').src = page + separator + "t=" + timestamp;
+    }
+  </script>
+  
   <!-- Firebase SDK v9 -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-    // const firebaseConfig = {
-    //   apiKey: "AIzaSyBQ3haOnOyZ12o8Qi4XCbk9YT7QChezFug",
-    //   authDomain: "selaras-9d418.firebaseapp.com",
-    //   projectId: "selaras-9d418",
-    //   storageBucket: "selaras-9d418.firebase.com",
-    //   messagingSenderId: "478677448463",
-    //   appId: "1:478677448463:web:9331a36d7f174c8eb9f07a"
-    // };
-
-    // const app = initializeApp(firebaseConfig);
+    
     function decryptConfig(encryptedConfig) {
       return JSON.parse(atob(encryptedConfig));
     }
@@ -76,13 +75,8 @@
           });
       });
     });
-
-    function loadPage(page) {
-      let timestamp = new Date().getTime();
-      let separator = page.includes('?') ? '&' : '?';
-      document.getElementById('contentFrame').src = page + separator + "t=" + timestamp;
-    }
   </script>
+
 </head>
 <body class="hold-transition sidebar-mini">
   <div id="login-container" style="text-align:center; margin-top: 20%;">
