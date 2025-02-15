@@ -14,11 +14,15 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-    const selaras = "ewogICAgICBhcGlLZXk6ICJBSXphU3lCUTNoYU9uT3laMTJvOFFpNFhDYms5WVQ3UUNoZXpGdWciLAogICAgICBhdXRoRG9tYWluOiAic2VsYXJhcy05ZDQxOC5maXJlYmFzZWFwcC5jb20iLAogICAgICBwcm9qZWN0SWQ6ICJzZWxhcmFzLTlkNDE4IiwKICAgICAgc3RvcmFnZUJ1Y2tldDogInNlbGFyYXMtOWQ0MTguYXBwc3BvdC5jb20iLAogICAgICBtZXNzYWdpbmdTZW5kZXJJZDogIjQ3ODY3NzQ0ODQ2MyIsCiAgICAgIGFwcElkOiAiMTo0Nzg2Nzc0NDg0NjM6d2ViOjkzMzFhMzZkN2YxNzRjOGViOWYwN2EiCiAgICB9";
-    function de(x) {
-      return JSON.parse(atob(x));
-    }
-    const inisiasi =  de(selaras);
+
+    const inisiasi = {
+      apiKey: "AIzaSyBQ3haOnOyZ12o8Qi4XCbk9YT7QChezFug",
+      authDomain: "selaras-9d418.firebaseapp.com",
+      projectId: "selaras-9d418",
+      storageBucket: "selaras-9d418.firebase.com",
+      messagingSenderId: "478677448463",
+      appId: "1:478677448463:web:9331a36d7f174c8eb9f07a"
+    };
     const app = initializeApp(inisiasi);
     const auth = getAuth(app);
 
