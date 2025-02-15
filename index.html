@@ -10,9 +10,74 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <!-- Firebase Authentication -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <!-- Firebase SDK v9 -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBQ3haOnOyZ12o8Qi4XCbk9YT7QChezFug",
+      authDomain: "selaras-9d418.firebaseapp.com",
+      projectId: "selaras-9d418",
+      storageBucket: "selaras-9d418.appspot.com",
+      messagingSenderId: "478677448463",
+      appId: "1:478677448463:web:9331a36d7f174c8eb9f07a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    function signInWithGoogle() {
+      const provider = new GoogleAuthProvider();
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          console.log("User signed in: ", result.user);
+        })
+        .catch((error) => {
+          console.error("Error signing in: ", error);
+          alert("Error signing in: " + error.message);
+        });
+    }
+
+    function signOutUser() {
+      signOut(auth)
+        .then(() => {
+          console.log("User signed out");
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.error("Error signing out: ", error);
+          alert("Error signing out: " + error.message);
+        });
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById('login-container').style.display = 'none';
+        document.getElementById('admin-container').style.display = 'block';
+      } else {
+        document.getElementById('login-container').style.display = 'block';
+        document.getElementById('admin-container').style.display = 'none';
+      }
+    });
+
+    $(document).ready(function() {
+      $('#menu-toggle').on('click', function(e) {
+        e.preventDefault();
+        $('body').toggleClass('sidebar-collapse');
+      });
+      
+      $('#logout-button').on('click', function() {
+        signOutUser();
+      });
+    });
+
+    function loadPage(page) {
+      let timestamp = new Date().getTime();
+      let separator = page.includes('?') ? '&' : '?';
+      document.getElementById('contentFrame').src = page + separator + "t=" + timestamp;
+    }
+  </script>
 </head>
 <body class="hold-transition sidebar-mini">
   <div id="login-container" style="text-align:center; margin-top: 20%; display: none;">
@@ -83,66 +148,5 @@
 
   <!-- AdminLTE JS -->
   <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBQ3haOnOyZ12o8Qi4XCbk9YT7QChezFug",
-      authDomain: "selaras-9d418.firebaseapp.com",
-      projectId: "selaras-9d418",
-      storageBucket: "selaras-9d418.appspot.com",
-      messagingSenderId: "478677448463",
-      appId: "1:478677448463:web:9331a36d7f174c8eb9f07a"
-    };
-
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    function signInWithGoogle() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider).then((result) => {
-        console.log("User signed in: ", result.user);
-      }).catch((error) => {
-        console.error("Error signing in: ", error);
-        alert("Error signing in: " + error.message);
-      });
-    }
-
-    function signOut() {
-      auth.signOut().then(() => {
-        console.log("User signed out");
-        window.location.reload();
-      }).catch((error) => {
-        console.error("Error signing out: ", error);
-        alert("Error signing out: " + error.message);
-      });
-    }
-
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        document.getElementById('login-container').style.display = 'none';
-        document.getElementById('admin-container').style.display = 'block';
-      } else {
-        document.getElementById('login-container').style.display = 'block';
-        document.getElementById('admin-container').style.display = 'none';
-      }
-    });
-
-    $(document).ready(function() {
-      $('#menu-toggle').on('click', function(e) {
-        e.preventDefault();
-        $('body').toggleClass('sidebar-collapse');
-      });
-      
-      $('#logout-button').on('click', function() {
-        signOut();
-      });
-    });
-
-    function loadPage(page) {
-      let timestamp = new Date().getTime();
-      let separator = page.includes('?') ? '&' : '?';
-      document.getElementById('contentFrame').src = page + separator + "t=" + timestamp;
-    }
-  </script>
 </body>
 </html>
