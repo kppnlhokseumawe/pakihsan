@@ -30,24 +30,6 @@
     const app = initializeApp(bismillah);
     const auth = getAuth(app);
 
-    // Definisikan fungsi di scope global
-    // function signInWithEmail() {
-    //   const email = document.getElementById("email").value;
-    //   const password = document.getElementById("password").value;
-
-    //   signInWithEmailAndPassword(auth, email, password)
-    //     .then((userCredential) => {
-    //       // Login berhasil
-    //       const user = userCredential.user;
-    //       console.log("User logged in: ", user);
-    //     })
-    //     .catch((error) => {
-    //       // Handle error
-    //       console.error("Error signing in: ", error);
-    //       alert("Error signing in: " + error.message);
-    //     });
-    // }
-    
     window.signInWithGoogle = function() {
       const provider = new GoogleAuthProvider();
       signInWithPopup(auth, provider)
@@ -90,12 +72,7 @@
           });
       });
     });
-    // document
-    //   .getElementById("email-login-form")
-    //   .addEventListener("submit", (e) => {
-    //     e.preventDefault(); // Mencegah form submit default
-    //     signInWithEmail(); // Panggil fungsi login
-    //   });
+   
   </script>
 
 </head>
@@ -154,7 +131,7 @@
         </nav>
       </div>
     </aside>
-
+    
     <!-- Content Wrapper -->
     <div class="content-wrapper">
       <iframe id="contentFrame" src="home.html" style="width: 100%; height: 100vh; border: none;"></iframe>
