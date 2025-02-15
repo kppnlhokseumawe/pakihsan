@@ -20,7 +20,7 @@
   <!-- Firebase SDK v9 -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getAuth, signInWithPopup, signInWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
     
     function dess(x) {
       return JSON.parse(atob(x));
@@ -31,22 +31,22 @@
     const auth = getAuth(app);
 
     // Definisikan fungsi di scope global
-    function signInWithEmail() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+    // function signInWithEmail() {
+    //   const email = document.getElementById("email").value;
+    //   const password = document.getElementById("password").value;
 
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          // Login berhasil
-          const user = userCredential.user;
-          console.log("User logged in: ", user);
-        })
-        .catch((error) => {
-          // Handle error
-          console.error("Error signing in: ", error);
-          alert("Error signing in: " + error.message);
-        });
-    }
+    //   signInWithEmailAndPassword(auth, email, password)
+    //     .then((userCredential) => {
+    //       // Login berhasil
+    //       const user = userCredential.user;
+    //       console.log("User logged in: ", user);
+    //     })
+    //     .catch((error) => {
+    //       // Handle error
+    //       console.error("Error signing in: ", error);
+    //       alert("Error signing in: " + error.message);
+    //     });
+    // }
     
     window.signInWithGoogle = function() {
       const provider = new GoogleAuthProvider();
@@ -90,23 +90,18 @@
           });
       });
     });
-    document
-      .getElementById("email-login-form")
-      .addEventListener("submit", (e) => {
-        e.preventDefault(); // Mencegah form submit default
-        signInWithEmail(); // Panggil fungsi login
-      });
+    // document
+    //   .getElementById("email-login-form")
+    //   .addEventListener("submit", (e) => {
+    //     e.preventDefault(); // Mencegah form submit default
+    //     signInWithEmail(); // Panggil fungsi login
+    //   });
   </script>
 
 </head>
 <body class="hold-transition sidebar-mini">
   <div id="login-container" style="text-align:center; margin-top: 20%;">
-    <h2>Login Admin</h2>
-    <form id="email-login-form">
-      <input type="email" id="email" placeholder="Email" required><br><br>
-      <input type="password" id="password" placeholder="Password" required><br><br>
-      <button type="submit" class="btn btn-primary">Login dengan Email</button>
-    </form>
+    <h2>Saleum Rakan Selaras!</h2>
     <button class="btn btn-primary" onclick="signInWithGoogle()">Login dengan Google</button>
   </div>
   
