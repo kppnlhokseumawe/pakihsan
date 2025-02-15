@@ -92,9 +92,9 @@
       messagingSenderId: "478677448463",
       appId: "1:478677448463:web:9331a36d7f174c8eb9f07a"
     };
-    
 
-    firebase.initializeApp(firebaseConfig);
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
     function signInWithGoogle() {
@@ -103,6 +103,7 @@
         console.log("User signed in: ", result.user);
       }).catch((error) => {
         console.error("Error signing in: ", error);
+        alert("Error signing in: " + error.message);
       });
     }
 
@@ -112,6 +113,7 @@
         window.location.reload();
       }).catch((error) => {
         console.error("Error signing out: ", error);
+        alert("Error signing out: " + error.message);
       });
     }
 
