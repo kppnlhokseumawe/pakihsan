@@ -15,16 +15,22 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBQ3haOnOyZ12o8Qi4XCbk9YT7QChezFug",
-      authDomain: "selaras-9d418.firebaseapp.com",
-      projectId: "selaras-9d418",
-      storageBucket: "selaras-9d418.firebase.com",
-      messagingSenderId: "478677448463",
-      appId: "1:478677448463:web:9331a36d7f174c8eb9f07a"
-    };
+    // const firebaseConfig = {
+    //   apiKey: "AIzaSyBQ3haOnOyZ12o8Qi4XCbk9YT7QChezFug",
+    //   authDomain: "selaras-9d418.firebaseapp.com",
+    //   projectId: "selaras-9d418",
+    //   storageBucket: "selaras-9d418.firebase.com",
+    //   messagingSenderId: "478677448463",
+    //   appId: "1:478677448463:web:9331a36d7f174c8eb9f07a"
+    // };
 
-    const app = initializeApp(firebaseConfig);
+    // const app = initializeApp(firebaseConfig);
+    function decryptConfig(encryptedConfig) {
+      return JSON.parse(atob(encryptedConfig));
+    }
+    const sss = 'eyJhcGlLZXkiOiJBSXphU3lCUTNoYU9uT3laMTJvOFFpNFhDYms5WVQ3UUNoZXpGdWciLCJhdXRoRG9tYWluIjoic2VsYXJhcy05ZDQxOC5maXJlYmFzZWFwcC5jb20iLCJwcm9qZWN0SWQiOiJzZWxhcmFzLTlkNDE4Iiwic3RvcmFnZUJ1Y2tldCI6InNlbGFyYXMtOWQ0MTguYXBwc3BvdC5jb20iLCJtZXNzYWdpbmdTZW5kZXJJZCI6IjQ3ODY3NzQ0ODQ2MyIsImFwcElkIjoiMTo0Nzg2Nzc0NDg0NjM6d2ViOjkzMzFhMzZkN2YxNzRjOGViOWYwN2EifQ==';
+    const firebaseConfig = decryptConfig(encryptedConfig);
+    
     const auth = getAuth(app);
 
     // Definisikan fungsi di scope global
