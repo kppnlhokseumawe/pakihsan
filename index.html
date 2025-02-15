@@ -27,7 +27,7 @@
       return JSON.parse(atob(x));
     }
     const sss = 'eyJhcGlLZXkiOiJBSXphU3lCUTNoYU9uT3laMTJvOFFpNFhDYms5WVQ3UUNoZXpGdWciLCJhdXRoRG9tYWluIjoic2VsYXJhcy05ZDQxOC5maXJlYmFzZWFwcC5jb20iLCJwcm9qZWN0SWQiOiJzZWxhcmFzLTlkNDE4Iiwic3RvcmFnZUJ1Y2tldCI6InNlbGFyYXMtOWQ0MTguYXBwc3BvdC5jb20iLCJtZXNzYWdpbmdTZW5kZXJJZCI6IjQ3ODY3NzQ0ODQ2MyIsImFwcElkIjoiMTo0Nzg2Nzc0NDg0NjM6d2ViOjkzMzFhMzZkN2YxNzRjOGViOWYwN2EifQ==';
-    const firebaseConfig = decryptConfig(sss);
+    const firebaseConfig = decr(sss);
     
     const auth = getAuth(app);
 
