@@ -11,7 +11,7 @@
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-   function loadPage(page) {
+    function loadPage(page) {
       let timestamp = new Date().getTime();
       let separator = page.includes('?') ? '&' : '?';
       document.getElementById('contentFrame').src = page + separator + "t=" + timestamp;
@@ -72,9 +72,7 @@
           });
       });
     });
-   
   </script>
-
 </head>
 <body class="hold-transition sidebar-mini">
   <div id="login-container" style="text-align:center; margin-top: 20%;">
@@ -97,7 +95,7 @@
 
     <!-- Sidebar -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
-      <a href="#" class="brand-link" id="menu-toggle">
+      <a href="#" class="brand-link">
         <span class="brand-text font-weight-light">Pak RT San</span>
       </a>
       <div class="sidebar">
