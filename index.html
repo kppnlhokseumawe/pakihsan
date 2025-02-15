@@ -15,7 +15,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-    const inisiasi = {
+    const firebaseConfig = {
       apiKey: "AIzaSyBQ3haOnOyZ12o8Qi4XCbk9YT7QChezFug",
       authDomain: "selaras-9d418.firebaseapp.com",
       projectId: "selaras-9d418",
@@ -23,7 +23,8 @@
       messagingSenderId: "478677448463",
       appId: "1:478677448463:web:9331a36d7f174c8eb9f07a"
     };
-    const app = initializeApp(inisiasi);
+
+    const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
     // Definisikan fungsi di scope global
