@@ -15,7 +15,10 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
     const selaras = "ewogICAgICBhcGlLZXk6ICJBSXphU3lCUTNoYU9uT3laMTJvOFFpNFhDYms5WVQ3UUNoZXpGdWciLAogICAgICBhdXRoRG9tYWluOiAic2VsYXJhcy05ZDQxOC5maXJlYmFzZWFwcC5jb20iLAogICAgICBwcm9qZWN0SWQ6ICJzZWxhcmFzLTlkNDE4IiwKICAgICAgc3RvcmFnZUJ1Y2tldDogInNlbGFyYXMtOWQ0MTguYXBwc3BvdC5jb20iLAogICAgICBtZXNzYWdpbmdTZW5kZXJJZDogIjQ3ODY3NzQ0ODQ2MyIsCiAgICAgIGFwcElkOiAiMTo0Nzg2Nzc0NDg0NjM6d2ViOjkzMzFhMzZkN2YxNzRjOGViOWYwN2EiCiAgICB9";
-    const inisiasi =  JSON.parse(atob(selaras));
+    function de(x) {
+      return JSON.parse(atob(x));
+    }
+    const inisiasi =  de(selaras);
     const app = initializeApp(inisiasi);
     const auth = getAuth(app);
 
