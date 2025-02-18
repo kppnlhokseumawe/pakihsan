@@ -126,8 +126,13 @@
 			  grid-template-columns: repeat(3, 1fr);
 			  gap: 5px; /* Jarak antara kolom */
 			}
-			.column {
+			.column1 {
 			  padding: 2px; 
+     			  column-width: 80px;	
+			}
+   			.column {
+			  padding: 2px; 
+     			  column-width: 250px;	
 			}
                     </style>
                 </head>
@@ -142,15 +147,15 @@
  	<div class="column">: ${rowData?.[1] || '-'}</div>
 </div>
 <div class="container">
-	<div class="column">Jabatan</div>
+	<div class="column1">Jabatan</div>
  	<div class="column">: ${rowData?.[2] || '-'}</div>
 </div>
 <div class="container">
-	<div class="column">Unit</div>
+	<div class="column1">Unit</div>
  	<div class="column">: KPPN Lhokseumawe</div>
 </div>
 <div class="container">
-	<div class="column">Alamat</div>
+	<div class="column1">Alamat</div>
  	<div class="column">: Jalan Merdeka No.47 Banda Sakti, Lhokseumawe</div>
 </div>
 
