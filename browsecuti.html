@@ -92,7 +92,17 @@
                 table.search(this.value).draw();
             });
         }
-
+	    
+	function konversiTanggal(tanggal) {
+	    const bulanDict = {
+	        "01": "Januari", "02": "Februari", "03": "Maret", "04": "April",
+	        "05": "Mei", "06": "Juni", "07": "Juli", "08": "Agustus",
+	        "09": "September", "10": "Oktober", "11": "November", "12": "Desember"
+	    };
+	    const [bulan, hari, tahun] = tanggal.split("/");
+	    return `${parseInt(hari)} ${bulanDict[bulan]} ${tahun}`;
+	} 
+	    
         function viewRow(rowIndex, isDelete = false) {
             const table = $('#data-table').DataTable();
             const rowData = table.row(rowIndex).data();
@@ -122,7 +132,7 @@
                     </style>
                 </head>
                 <body>
-                    <p align="right"><span style="font-weight: 400;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lhokseumawe, ${rowData?.[3] || '-'} </span></p>
+                    <p align="right"><span style="font-weight: 400;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lhokseumawe, konversiTanggal(${rowData?.[3] || '-'}) </span></p>
 <p><span style="font-weight: 400;">&nbsp;</span></p>
 <p><span style="font-weight: 400;">Yth. Kepala KPPN Lhokseumawe </span><span style="font-weight: 400;"><br /></span><span style="font-weight: 400;"> di Lhokseumawe</span></p>
 <p><span style="font-weight: 400;">&nbsp;</span></p>
