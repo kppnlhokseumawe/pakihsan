@@ -32,7 +32,13 @@
     </table>
   </div>
   <div id="tabs-2">
-    <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. Suspendisse sed ligula in ligula suscipit aliquam. Praesent in eros vestibulum mi adipiscing adipiscing. Morbi facilisis. Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat. Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
+    <input type="text" id="table-filter2" placeholder="Cari di tabel..." style="margin-bottom: 10px; padding: 5px; width: 100%;">
+    <table id="data-table2" class="display" style="width:100%">
+        <thead>
+            <tr id="table-header2"></tr>
+        </thead>
+        <tbody id="table-body2"></tbody>
+    </table>
   </div>
 
 </div>
@@ -40,8 +46,12 @@
         const spreadsheetId = "1y-xzl_klc8K0BKzcWhnfeKfn_Inl2mJ9MFoCWPeFFtg";
         const apiKey = "AIzaSyAkeRjFXNe9Tm5bBMCppS4hFLdengV7Q0M";
         const sheetName = "Monitoring Kendaraan";
+        const sheetNameHistory = "Form Responses 3";
         const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?key=${apiKey}`;
 
+        const apiUrlHistory = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetNameHistory}?key=${apiKey}`;
+
+       
         async function fetchGoogleSheet() {
             try {
                 const response = await fetch(apiUrl);
@@ -97,41 +107,61 @@
             });
         }
 
-        function viewRow(rowIndex, isDelete = false) {
-            const table = $('#data-table').DataTable();
-            const rowData = table.row(rowIndex).data();
-
-            // Membuat halaman HTML untuk data
-            const newWindow = window.open('', '_blank');
-            newWindow.document.write(`
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Detil</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; margin: 20px; }
-                        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-                        th, td { border: 1px solid #ddd; padding: 8px; }
-                        th { background-color: #f2f2f2; text-align: left; }
-                    </style>
-                </head>
-                <body>
-                    
-                    <table>
-                       
-                        <tbody>
-                            <tr>${rowData.map(cell => `<td>${cell || '-'}</td>`).join('')}</tr>
-                        </tbody>
-                    </table>
-                    
-                </body>
-                </html>
-            `);
-            newWindow.document.close();
+          async function fetchGoogleSheet2() {
+            try {
+                const response = await fetch(apiUrlHistory);
+                if (!response.ok) {
+                    throw new Error("Gagal mengambil data.");
+                }
+                const data = await response.json();
+                renderTable(data.values || []);
+            } catch (error) {
+                console.error("Error:", error);
+            }
         }
 
+        function renderTable(data) {
+            if (!data || data.length === 0) {
+                console.warn("Tidak ada data untuk dirender.");
+                return;
+            }
+
+            const header = data[0];
+            const body = data.slice(1);
+
+            const headerRow = document.getElementById("table-header2");
+            header.forEach(cell => {
+                const th = document.createElement("th");
+                th.textContent = cell || "-";
+                headerRow.appendChild(th);
+            });
+
+
+            const tableBody = document.getElementById("table-body2");
+            body.forEach((row, rowIndex) => {
+                const tr = document.createElement("tr");
+                row.forEach(cell => {
+                    const td = document.createElement("td");
+                    td.textContent = cell || "-";
+                    tr.appendChild(td);
+                });
+
+                tableBody.appendChild(tr);
+            });
+
+            const table = $('#data-table2').DataTable({
+                paging: true,
+                searching: true,
+                info: true,
+                order: [[0, 'asc']],
+                dom: 'lrtip'
+            });
+
+            $('#table-filter2').on('keyup', function () {
+                table.search(this.value).draw();
+            });
+        }
+       
         fetchGoogleSheet();
     </script>
 </body>
