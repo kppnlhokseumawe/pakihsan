@@ -48,10 +48,9 @@
         const sheetName = "Monitoring Kendaraan";
         const sheetNameHistory = "Form Responses 3";
         const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?key=${apiKey}`;
-
         const apiUrlHistory = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetNameHistory}?key=${apiKey}`;
 
-       
+        // Fungsi untuk mengambil dan menampilkan tabel pertama
         async function fetchGoogleSheet() {
             try {
                 const response = await fetch(apiUrl);
@@ -59,68 +58,28 @@
                     throw new Error("Gagal mengambil data.");
                 }
                 const data = await response.json();
-                renderTable(data.values || []);
+                renderTable(data.values || [], "table-header", "table-body", "data-table", "table-filter");
             } catch (error) {
                 console.error("Error:", error);
             }
         }
 
-        function renderTable(data) {
-            if (!data || data.length === 0) {
-                console.warn("Tidak ada data untuk dirender.");
-                return;
-            }
-
-            const header = data[0];
-            const body = data.slice(1);
-
-            const headerRow = document.getElementById("table-header");
-            header.forEach(cell => {
-                const th = document.createElement("th");
-                th.textContent = cell || "-";
-                headerRow.appendChild(th);
-            });
-
-
-            const tableBody = document.getElementById("table-body");
-            body.forEach((row, rowIndex) => {
-                const tr = document.createElement("tr");
-                row.forEach(cell => {
-                    const td = document.createElement("td");
-                    td.textContent = cell || "-";
-                    tr.appendChild(td);
-                });
-
-                tableBody.appendChild(tr);
-            });
-
-            const table = $('#data-table').DataTable({
-                paging: true,
-                searching: true,
-                info: true,
-                order: [[0, 'asc']],
-                dom: 'lrtip'
-            });
-
-            $('#table-filter').on('keyup', function () {
-                table.search(this.value).draw();
-            });
-        }
-
-          async function fetchGoogleSheet2() {
+        // Fungsi untuk mengambil dan menampilkan tabel kedua
+        async function fetchGoogleSheet2() {
             try {
                 const response = await fetch(apiUrlHistory);
                 if (!response.ok) {
                     throw new Error("Gagal mengambil data.");
                 }
                 const data = await response.json();
-                renderTable(data.values || []);
+                renderTable(data.values || [], "table-header2", "table-body2", "data-table2", "table-filter2");
             } catch (error) {
                 console.error("Error:", error);
             }
         }
 
-        function renderTable(data) {
+        // Fungsi generik untuk render tabel (bisa dipakai untuk kedua tabel)
+        function renderTable(data, headerId, bodyId, tableId, filterId) {
             if (!data || data.length === 0) {
                 console.warn("Tidak ada data untuk dirender.");
                 return;
@@ -129,39 +88,43 @@
             const header = data[0];
             const body = data.slice(1);
 
-            const headerRow = document.getElementById("table-header2");
+            const headerRow = document.getElementById(headerId);
+            headerRow.innerHTML = ""; // Menghapus header sebelumnya
             header.forEach(cell => {
                 const th = document.createElement("th");
                 th.textContent = cell || "-";
                 headerRow.appendChild(th);
             });
 
-
-            const tableBody = document.getElementById("table-body2");
-            body.forEach((row, rowIndex) => {
+            const tableBody = document.getElementById(bodyId);
+            tableBody.innerHTML = ""; // Menghapus isi tabel sebelumnya
+            body.forEach(row => {
                 const tr = document.createElement("tr");
                 row.forEach(cell => {
                     const td = document.createElement("td");
                     td.textContent = cell || "-";
                     tr.appendChild(td);
                 });
-
                 tableBody.appendChild(tr);
             });
 
-            const table = $('#data-table2').DataTable({
+            // Inisialisasi DataTable
+            const table = $(`#${tableId}`).DataTable({
                 paging: true,
                 searching: true,
                 info: true,
                 order: [[0, 'asc']],
+                destroy: true, // Pastikan DataTable tidak duplikat saat refresh data
                 dom: 'lrtip'
             });
 
-            $('#table-filter2').on('keyup', function () {
+            // Filter pencarian
+            $(`#${filterId}`).on('keyup', function () {
                 table.search(this.value).draw();
             });
         }
-       
+
+       // Panggil kedua fungsi
        fetchGoogleSheet();
        fetchGoogleSheet2();
     </script>
