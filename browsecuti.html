@@ -43,35 +43,39 @@
 
         function formatTimestamp(timestamp) {
             if (!timestamp) return "-"; // Jika timestamp kosong, kembalikan "-"
-
+        
             // Pisahkan tanggal dan waktu
             const [datePart, timePart] = timestamp.split(" ");
             if (!datePart || !timePart) return "-"; // Jika format tidak valid, kembalikan "-"
-
+        
             // Pisahkan komponen tanggal
             const [month, day, year] = datePart.split("/");
             if (!month || !day || !year) return "-"; // Jika format tanggal tidak valid, kembalikan "-"
-
+        
             // Handle tahun 2 digit (misalnya, '25' -> 2025)
             const fullYear = year.length === 2 ? `20${year}` : year;
-
+        
             // Pisahkan komponen waktu
             const [hours, minutes, seconds] = timePart.split(":");
             if (!hours || !minutes || !seconds) return "-"; // Jika format waktu tidak valid, kembalikan "-"
-
+        
+            // Padding jam, menit, dan detik dengan 0 jika hanya 1 digit
+            const paddedHours = hours.padStart(2, '0');
+            const paddedMinutes = minutes.padStart(2, '0');
+            const paddedSeconds = seconds.padStart(2, '0');
+        
             // Buat objek Date untuk memastikan validitas tanggal dan waktu
-            const date = new Date(`${fullYear}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hours}:${minutes}:${seconds}Z`);
+            const date = new Date(`${fullYear}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${paddedHours}:${paddedMinutes}:${paddedSeconds}Z`);
             if (isNaN(date.getTime())) return "-"; // Jika tanggal tidak valid, kembalikan "-"
-
+        
             // Format ke YYYYMMDDHHmmssSSS
             return (
                 date.getFullYear() +
                 String(date.getMonth() + 1).padStart(2, '0') + // Bulan dimulai dari 0
                 String(date.getDate()).padStart(2, '0') +
-                String(date.getHours()).padStart(2, '0') +
-                String(date.getMinutes()).padStart(2, '0') +
-                String(date.getSeconds()).padStart(2, '0') +
-                String(date.getMilliseconds()).padStart(3, '0') // Milidetik
+                paddedHours + // Jam yang sudah di-padding
+                paddedMinutes + // Menit yang sudah di-padding
+                paddedSeconds + // Detik yang sudah di-padding
             );
         }
 
