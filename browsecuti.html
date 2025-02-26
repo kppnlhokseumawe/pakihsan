@@ -10,7 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <style> body { font-family: Arial}</style>
+    <style> body { font-family: Arial }</style>
 </head>
 <body>
     <h1>Daftar Pengajuan Cuti KPPN Lhoks</h1>
@@ -23,8 +23,7 @@
     </table>
 
     <script>
-      //  const spreadsheetId = "1aVJRpZa9wIsnLY26I7IHHJ7QcjrAEafSiVj-cEnygUk";
-	const spreadsheetId = "1YW2Vifg3SbjYu29VNVrjCPdb30REMIL-_LYXLly5BwI";
+        const spreadsheetId = "1YW2Vifg3SbjYu29VNVrjCPdb30REMIL-_LYXLly5BwI";
         const apiKey = "AIzaSyAkeRjFXNe9Tm5bBMCppS4hFLdengV7Q0M";
         const sheetName = "Form Responses 1";
         const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?key=${apiKey}`;
@@ -64,17 +63,24 @@
 
             const tableBody = document.getElementById("table-body");
             body.forEach((row, rowIndex) => {
+                if (!row || row.length === 0) return; // Pastikan row ada dan memiliki elemen
+
                 const tr = document.createElement("tr");
                 row.forEach(cell => {
                     const td = document.createElement("td");
-                    td.textContent = cell || "-";
+                    td.textContent = cell ? cell : "-"; // Jika kosong, ubah menjadi "-"
                     tr.appendChild(td);
                 });
-		const actionTd = document.createElement("td");
-	            actionTd.innerHTML = `<button class="crud-btn btn-edit" onclick="viewRow(${rowIndex})">Cetak</button>`;
-	            tr.appendChild(actionTd);
-		
-		tableBody.appendChild(tr);
+
+                const actionTd = document.createElement("td");
+                const approvalStatus = row[row.length - 1] ? row[row.length - 1].trim() : "-"; // Ambil status persetujuan
+                if (approvalStatus === "Ya") {
+                    actionTd.innerHTML = `<button class="crud-btn btn-edit" onclick="viewRow(${rowIndex})">Cetak</button>`;
+                } else {
+                    actionTd.textContent = ""; // Tetap tambahkan kolom aksi agar tabel tetap rapi
+                }
+                tr.appendChild(actionTd);
+                tableBody.appendChild(tr);
             });
 
             const table = $('#data-table').DataTable({
@@ -88,110 +94,6 @@
             $('#table-filter').on('keyup', function () {
                 table.search(this.value).draw();
             });
-        }
-	    
-	function konversiTanggal(tanggal) {
-	    const bulanDict = {
-	        "1": "Januari", "2": "Februari", "3": "Maret", "4": "April",
-	        "5": "Mei", "6": "Juni", "7": "Juli", "8": "Agustus",
-	        "9": "September", "10": "Oktober", "11": "November", "12": "Desember"
-	    };
-	    const [bulan, hari, tahun] = tanggal.split("/");
-	    return `${parseInt(hari)} ${bulanDict[bulan]} ${tahun}`;
-	} 
-	    
-        function viewRow(rowIndex, isDelete = false) {
-            const table = $('#data-table').DataTable();
-            const rowData = table.row(rowIndex).data();
-            const tanggalFormatted = konversiTanggal(rowData?.[3] || '-');
-            // Membuat halaman HTML untuk data
-            const newWindow = window.open('', '_blank');
-            newWindow.document.write(`
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Cetakan Cuti</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; margin: 20px; }
-                        table { border-collapse: collapse; width: 100%; margin-top: 5px; border: none !important;}
-                        th, td { padding: 8px; }
-                        th { background-color: #f2f2f2; text-align: left; }
-			.container {
-			  display: grid;
-			  grid-template-columns: repeat(3, 1fr);
-			  gap: 5px; /* Jarak antara kolom */
-			}
-			.column1 {
-			  padding: 2px; 
-     			  column-width: 80px;	
-			}
-   			.column {
-			  padding: 2px; 
-     			  column-width: 250px;	
-			}
-                    </style>
-                </head>
-                <body>
-                    <p align="right"><span style="font-weight: 400;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lhokseumawe, ${tanggalFormatted} </span></p>
-<p><span style="font-weight: 400;">&nbsp;</span></p>
-<p><span style="font-weight: 400;">Yth. Kepala KPPN Lhokseumawe </span><span style="font-weight: 400;"><br /></span><span style="font-weight: 400;"> di Lhokseumawe</span></p>
-<p><span style="font-weight: 400;">&nbsp;</span></p>
-<p><span style="font-weight: 400;">Yang bertanda tangan dibawah ini:</span></p>
-<div class="container">
-	<div class="column">Nama</div>
- 	<div class="column">: ${rowData?.[1] || '-'}</div>
-</div>
-<div class="container">
-	<div class="column1">Jabatan</div>
- 	<div class="column">: ${rowData?.[2] || '-'}</div>
-</div>
-<div class="container">
-	<div class="column1">Unit</div>
- 	<div class="column">: KPPN Lhokseumawe</div>
-</div>
-<div class="container">
-	<div class="column1">Alamat</div>
- 	<div class="column">: Jalan Merdeka No.47 Banda Sakti, Lhokseumawe</div>
-</div>
-
-<p><span style="font-weight: 400;">Dengan ini mengajukan Cuti Tahunan 2025 selama ${rowData?.[4] || '-'} hari kerja pada tanggal ${rowData?.[5] || '-'} dikarenakan ${rowData?.[7] || '-'}, selama menjalankan cuti tahunan alamat saya di ${rowData?.[6] || '-'}.</span></p>
-<p><span style="font-weight: 400;">Demikian permintaan cuti tahunan ini saya buat untuk dapat dipertimbangkan sebagaimana mestinya.</span></p>
-
-<table style="width: 779px; height: 169px; border=none">
-<tbody>
-<tr>
-<td style="width: 401.217px;">
-<p><span style="font-weight: 400;">Kepala Kantor,</span></p>
-</td>
-<td style="width: 363.783px;">
-<p><strong>&nbsp;</strong>Hormat Saya</p>
-</td>
-</tr>
-<tr>
-<td style="width: 401.217px;">
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>Kurniawan</p>
-</td>
-<td style="width: 363.783px;">
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>${rowData?.[1] || '-'}</p>
-</td>
-</tr>
-</tbody>
-</table>
-<p><span style="font-weight: 400;">&nbsp;</span></p>
-<p><span style="font-weight: 400;">&nbsp;</span></p>
-<p><span style="font-weight: 400;">Tembusan :&nbsp;</span></p>
-<p><span style="font-weight: 400;">Kepala Subbag Umum</span></p>
-                   
-            `);
-            newWindow.document.close();
         }
 
         fetchGoogleSheet();
