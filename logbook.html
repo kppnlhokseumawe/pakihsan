@@ -104,65 +104,44 @@
             const rowData = table.row(rowIndex).data();
             const tanggalFormatted = konversiTanggal(rowData?.[3] || '-');
             // Membuat halaman HTML untuk data
-            const qrData = ` 
-                    Nama: ${rowData[1]}
-                    Jabatan: ${rowData[0]}
-                    Tanggal: ${tanggalFormatted}
-                    Jam: ${rowData[4]} - ${rowData[5]}
-                    Uraian: ${rowData[6]}
-                    Keterangan: ${rowData[7]}
-                    ` ;
             const newWindow = window.open('', '_blank');
-            
-                <script>
-                    new QRious({
-                        element: document.getElementById("qr-code"),
-                        value: qrData, 
-                        size: 150 // Ukuran QR Code
-                    });
-                </script>
             newWindow.document.write(`              
                 <!DOCTYPE html>
-                <html lang="id">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Cetak Logbook Pekerjaan Harian Pegawai</title>
-                    <style>
-                        body {
-                            font-family: Arial, sans-serif;
-                            margin: 0;
-                            padding: 20px;
-                        }
-                        header {
-                            text-align: center;
-                            padding: 5px 0;
-                            margin-bottom: 2px;
-                        }
-                        .container {
-                            width: 90%;
-                            margin: 0 auto;
-                        }
-                        .logbook-container {
-                            background-color: white;
-                            padding: 2px;
-                        }
-                        .qr-container {
-                            text-align: center;
-                            margin-top: 20px;
-                        }
-                    </style>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
-                </head>
-                <body>
-                
-                <header>
-                    <h1>Laporan Harian Pegawai (Logbook)</h1>
-                </header>
-                
-                <div class="container">
-                    <div class="logbook-container">
-                        <table>
+                    <html lang="id">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Cetak Logbook Pekerjaan Harian Pegawai</title>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                margin: 0;
+                                padding: 20px;
+                            }
+                            header {
+                                text-align: center;
+                                padding: 5px 0;
+                                margin-bottom: 2px;
+                            }
+                            .container {
+                                width: 90%;
+                                margin: 0 auto;
+                            }
+                            .logbook-container {
+                                background-color: white;
+                                padding: 2px;
+                            }
+                           </style>
+                    </head>
+                    <body>
+                    
+                    <header>
+                        <h1>Laporan Harian Pegawai (Logbook)</h1>
+                    </header>
+                    
+                    <div class="container">
+                        <div class="logbook-container">
+                            <table>
                                     <tr>
                                         <td>Nama </td>
                                         <td>: ${rowData?.[1]} </td>
@@ -186,18 +165,11 @@
                             <p><b>Keterangan</b><br/>
                             ${rowData?.[7]}
                             </p>
+                    
+                        </div>
                     </div>
-                
-                    <div class="qr-container">
-                        <canvas id="qr-code"></canvas>
-                    </div>
-                </div>
-                
-                
-                
-                </body>
-                </html>
-
+                    </body>
+                    </html>
             `);
             newWindow.document.close();
         }
