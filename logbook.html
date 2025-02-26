@@ -104,6 +104,14 @@
             const rowData = table.row(rowIndex).data();
             const tanggalFormatted = konversiTanggal(rowData?.[3] || '-');
             // Membuat halaman HTML untuk data
+            const qrData = ` 
+                    Nama: ${rowData[1]}
+                    Jabatan: ${rowData[0]}
+                    Tanggal: ${tanggalFormatted}
+                    Jam: ${rowData[4]} - ${rowData[5]}
+                    Uraian: ${rowData[6]}
+                    Keterangan: ${rowData[7]}
+                    ` ;
             const newWindow = window.open('', '_blank');
             newWindow.document.write(`              
                 <!DOCTYPE html>
@@ -146,29 +154,29 @@
                 <div class="container">
                     <div class="logbook-container">
                         <table>
-                            <tr>
-                                <td>Nama </td>
-                                <td>: <span id="nama"></span></td>
-                            </tr>
-                            <tr>
-                                <td>Jabatan </td>
-                                <td>: <span id="jabatan"></span></td>
-                            </tr>
-                            <tr>
-                                <td>Tanggal </td>
-                                <td>: <span id="tanggal"></span></td>
-                            </tr>
-                            <tr>
-                                <td>Jam </td>
-                                <td>: <span id="jam"></span></td>
-                            </tr>
-                        </table>
-                        <p><b>Uraian Pekerjaan</b><br/>
-                            <span id="uraian"></span>
-                        </p>
-                        <p><b>Keterangan</b><br/>
-                            <span id="keterangan"></span>
-                        </p>
+                                    <tr>
+                                        <td>Nama </td>
+                                        <td>: ${rowData?.[1]} </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jabatan </td>
+                                        <td>: ${rowData?.[0]}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tanggal </td>
+                                        <td>: ${tanggalFormatted} </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jam </td>
+                                        <td>: ${rowData?.[4]} s.d ${rowData?.[5]} </td>
+                                    </tr>
+                            </table>
+                            <p><b>Uraian Pekerjaan</b><br/>
+                            ${rowData?.[6]}
+                            </p>
+                            <p><b>Keterangan</b><br/>
+                            ${rowData?.[7]}
+                            </p>
                     </div>
                 
                     <div class="qr-container">
@@ -178,25 +186,6 @@
                 
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
                 <script>
-                    // Menampilkan data ke halaman
-                    document.getElementById("nama").innerText = rowData[1];
-                    document.getElementById("jabatan").innerText = rowData[0];
-                    document.getElementById("tanggal").innerText = tanggalFormatted;
-                    document.getElementById("jam").innerText = `${rowData[4]} s.d ${rowData[5]}`;
-                    document.getElementById("uraian").innerText = rowData[6];
-                    document.getElementById("keterangan").innerText = rowData[7];
-                
-                    // Menggabungkan data untuk QR Code
-                        const qrData = `
-                    Nama: ${rowData[1]}
-                    Jabatan: ${rowData[0]}
-                    Tanggal: ${tanggalFormatted}
-                    Jam: ${rowData[4]} - ${rowData[5]}
-                    Uraian: ${rowData[6]}
-                    Keterangan: ${rowData[7]}
-                    `;
-                
-                    // Generate QR Code
                     new QRious({
                         element: document.getElementById("qr-code"),
                         value: qrData, 
