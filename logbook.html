@@ -113,6 +113,14 @@
                     Keterangan: ${rowData[7]}
                     ` ;
             const newWindow = window.open('', '_blank');
+            
+                <script>
+                    new QRious({
+                        element: document.getElementById("qr-code"),
+                        value: qrData, 
+                        size: 150 // Ukuran QR Code
+                    });
+                </script>
             newWindow.document.write(`              
                 <!DOCTYPE html>
                 <html lang="id">
@@ -144,6 +152,7 @@
                             margin-top: 20px;
                         }
                     </style>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
                 </head>
                 <body>
                 
@@ -184,14 +193,7 @@
                     </div>
                 </div>
                 
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
-                <script>
-                    new QRious({
-                        element: document.getElementById("qr-code"),
-                        value: qrData, 
-                        size: 150 // Ukuran QR Code
-                    });
-                </script>
+                
                 
                 </body>
                 </html>
