@@ -41,29 +41,6 @@
             }
         }
 
-        function formatTimestamp(timestamp) {
-            if (!timestamp) return "-"; 
-            const [datePart, timePart] = timestamp.split(" ");
-            if (!datePart || !timePart) return "-"; 
-            const [month, day, year] = datePart.split("/");
-            if (!month || !day || !year) return "-"; 
-            const [hours, minutes, seconds] = timePart.split(":");
-            if (!hours || !minutes || !seconds) return "-"; 
-
-            const date = new Date(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hours}:${minutes}:${seconds}Z`);
-            if (isNaN(date.getTime())) return "-"; 
-        
-            return (
-                date.getFullYear() +
-                String(date.getMonth() + 1).padStart(2, '0') + // Bulan dimulai dari 0
-                String(date.getDate()).padStart(2, '0') +
-                String(date.getHours()).padStart(2, '0') +
-                String(date.getMinutes()).padStart(2, '0') +
-                String(date.getSeconds()).padStart(2, '0') +
-                String(date.getMilliseconds()).padStart(3, '0') // Milidetik
-            );
-        }
-        
         function renderTable(data) {
             if (!data || data.length === 0) {
                 console.warn("Tidak ada data untuk dirender.");
@@ -91,11 +68,7 @@
                 const tr = document.createElement("tr");
                 row.forEach(cell => {
                     const td = document.createElement("td");
-                    if (cellIndex === 0) { // Kolom pertama adalah timestamp
-                        td.textContent = formatTimestamp(cell);
-                    }else{
-                        td.textContent = cell ? cell : "-"; // Jika kosong, ubah menjadi "-"
-                    }
+                    td.textContent = cell ? cell : "-"; // Jika kosong, ubah menjadi "-"
                     tr.appendChild(td);
                 });
 
