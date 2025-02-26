@@ -43,23 +43,26 @@
 
         function formatTimestamp(timestamp) {
             if (!timestamp) return "-"; // Jika timestamp kosong, kembalikan "-"
-        
+
             // Pisahkan tanggal dan waktu
             const [datePart, timePart] = timestamp.split(" ");
             if (!datePart || !timePart) return "-"; // Jika format tidak valid, kembalikan "-"
-        
+
             // Pisahkan komponen tanggal
             const [month, day, year] = datePart.split("/");
             if (!month || !day || !year) return "-"; // Jika format tanggal tidak valid, kembalikan "-"
-        
+
+            // Handle tahun 2 digit (misalnya, '25' -> 2025)
+            const fullYear = year.length === 2 ? `20${year}` : year;
+
             // Pisahkan komponen waktu
             const [hours, minutes, seconds] = timePart.split(":");
             if (!hours || !minutes || !seconds) return "-"; // Jika format waktu tidak valid, kembalikan "-"
-        
+
             // Buat objek Date untuk memastikan validitas tanggal dan waktu
-            const date = new Date(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hours}:${minutes}:${seconds}Z`);
+            const date = new Date(`${fullYear}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hours}:${minutes}:${seconds}Z`);
             if (isNaN(date.getTime())) return "-"; // Jika tanggal tidak valid, kembalikan "-"
-        
+
             // Format ke YYYYMMDDHHmmssSSS
             return (
                 date.getFullYear() +
@@ -71,7 +74,7 @@
                 String(date.getMilliseconds()).padStart(3, '0') // Milidetik
             );
         }
-        
+
         function renderTable(data) {
             if (!data || data.length === 0) {
                 console.warn("Tidak ada data untuk dirender.");
@@ -99,10 +102,10 @@
                 const tr = document.createElement("tr");
                 row.forEach((cell, cellIndex) => {
                     const td = document.createElement("td");
-                    if(cellIndex===0){
-                        formatTimestamp(cell);
-                    }else{
-                    td.textContent = cell ? cell : "-"; // Jika kosong, ubah menjadi "-"
+                    if (cellIndex === 0) { // Kolom pertama adalah timestamp
+                        td.textContent = formatTimestamp(cell); // Gunakan hasil formatTimestamp
+                    } else {
+                        td.textContent = cell ? cell : "-"; // Jika kosong, ubah menjadi "-"
                     }
                     tr.appendChild(td);
                 });
@@ -118,6 +121,7 @@
                 tableBody.appendChild(tr);
             });
 
+            // Inisialisasi DataTables setelah tabel selesai dirender
             const table = $('#data-table').DataTable({
                 paging: true,
                 searching: true,
