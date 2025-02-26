@@ -70,13 +70,10 @@
                     td.textContent = cell ? cell : "-";
                     tr.appendChild(td);
                 });
-		 // Cek apakah kolom terakhir kosong atau falsy
-		const lastColumnValue = row[row.length - 1];
-		if (!lastColumnValue) {
-	            const actionTd = document.createElement("td");
+		const actionTd = document.createElement("td");
 	            actionTd.innerHTML = `<button class="crud-btn btn-edit" onclick="viewRow(${rowIndex})">Cetak</button>`;
-	                tr.appendChild(actionTd);
-		}
+	            tr.appendChild(actionTd);
+		
 		tableBody.appendChild(tr);
             });
 
