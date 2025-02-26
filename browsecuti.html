@@ -41,6 +41,37 @@
             }
         }
 
+        function formatTimestamp(timestamp) {
+            if (!timestamp) return "-"; // Jika timestamp kosong, kembalikan "-"
+        
+            // Pisahkan tanggal dan waktu
+            const [datePart, timePart] = timestamp.split(" ");
+            if (!datePart || !timePart) return "-"; // Jika format tidak valid, kembalikan "-"
+        
+            // Pisahkan komponen tanggal
+            const [month, day, year] = datePart.split("/");
+            if (!month || !day || !year) return "-"; // Jika format tanggal tidak valid, kembalikan "-"
+        
+            // Pisahkan komponen waktu
+            const [hours, minutes, seconds] = timePart.split(":");
+            if (!hours || !minutes || !seconds) return "-"; // Jika format waktu tidak valid, kembalikan "-"
+        
+            // Buat objek Date untuk memastikan validitas tanggal dan waktu
+            const date = new Date(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hours}:${minutes}:${seconds}Z`);
+            if (isNaN(date.getTime())) return "-"; // Jika tanggal tidak valid, kembalikan "-"
+        
+            // Format ke YYYYMMDDHHmmssSSS
+            return (
+                date.getFullYear() +
+                String(date.getMonth() + 1).padStart(2, '0') + // Bulan dimulai dari 0
+                String(date.getDate()).padStart(2, '0') +
+                String(date.getHours()).padStart(2, '0') +
+                String(date.getMinutes()).padStart(2, '0') +
+                String(date.getSeconds()).padStart(2, '0') +
+                String(date.getMilliseconds()).padStart(3, '0') // Milidetik
+            );
+        }
+        
         function renderTable(data) {
             if (!data || data.length === 0) {
                 console.warn("Tidak ada data untuk dirender.");
@@ -66,9 +97,13 @@
                 if (!row || row.length === 0) return; // Pastikan row ada dan memiliki elemen
 
                 const tr = document.createElement("tr");
-                row.forEach(cell => {
+                row.forEach((cell, cellIndex) => {
                     const td = document.createElement("td");
+                    if(cellIndex===0){
+                        formatTimestamp(cell);
+                    }else{
                     td.textContent = cell ? cell : "-"; // Jika kosong, ubah menjadi "-"
+                    }
                     tr.appendChild(td);
                 });
 
