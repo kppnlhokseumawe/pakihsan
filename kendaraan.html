@@ -83,6 +83,43 @@
             }
         }
 
+        function formatTimestamp(timestamp) {
+            if (!timestamp) return "-"; // Jika timestamp kosong, kembalikan "-"
+        
+            // Pisahkan tanggal dan waktu
+            const [datePart, timePart] = timestamp.split(" ");
+            if (!datePart || !timePart) return "-"; // Jika format tidak valid, kembalikan "-"
+        
+            // Pisahkan komponen tanggal
+            const [month, day, year] = datePart.split("/");
+            if (!month || !day || !year) return "-"; // Jika format tanggal tidak valid, kembalikan "-"
+        
+            // Handle tahun 2 digit (misalnya, '25' -> 2025)
+            const fullYear = year.length === 2 ? `20${year}` : year;
+        
+            // Pisahkan komponen waktu
+            const [hours, minutes, seconds] = timePart.split(":");
+            if (!hours || !minutes || !seconds) return "-"; // Jika format waktu tidak valid, kembalikan "-"
+        
+            // Padding jam, menit, dan detik dengan 0 jika hanya 1 digit
+            const paddedHours = hours.padStart(2, '0');
+            const paddedMinutes = minutes.padStart(2, '0');
+            const paddedSeconds = seconds.padStart(2, '0');
+        
+            // Buat objek Date untuk memastikan validitas tanggal dan waktu
+            const date = new Date(`${fullYear}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${paddedHours}:${paddedMinutes}:${paddedSeconds}Z`);
+            if (isNaN(date.getTime())) return "-"; // Jika tanggal tidak valid, kembalikan "-"
+        
+            // Format ke YYYYMMDDHHmmssSSS
+            return (
+                date.getFullYear() +
+                String(date.getMonth() + 1).padStart(2, '0') + // Bulan dimulai dari 0
+                String(date.getDate()).padStart(2, '0') +
+                paddedHours + // Jam yang sudah di-padding
+                paddedMinutes + // Menit yang sudah di-padding
+                paddedSeconds
+            );
+        }
         // Fungsi generik untuk render tabel (bisa dipakai untuk kedua tabel)
         function renderTable(data, headerId, bodyId, tableId, filterId) {
             if (!data || data.length === 0) {
@@ -103,15 +140,32 @@
 
             const tableBody = document.getElementById(bodyId);
             tableBody.innerHTML = ""; // Menghapus isi tabel sebelumnya
-            body.forEach(row => {
+            if(headerId==="table-header"){
+                body.forEach(row => {
+                    const tr = document.createElement("tr");
+                    row.forEach(cell => {
+                        const td = document.createElement("td");
+                        td.textContent = cell || "-";
+                        tr.appendChild(td);
+                    });
+                    tableBody.appendChild(tr);
+                });
+            }else{
+                body.forEach((row, rowIndex) => {
+                if (!row || row.length === 0) return; // Pastikan row ada dan memiliki elemen
                 const tr = document.createElement("tr");
-                row.forEach(cell => {
+                row.forEach((cell, cellIndex) => {
                     const td = document.createElement("td");
-                    td.textContent = cell || "-";
+                    if (cellIndex === 0) { // Kolom pertama adalah timestamp
+                        td.textContent = formatTimestamp(cell); // Gunakan hasil formatTimestamp
+                    } else {
+                        td.textContent = cell ? cell : "-"; // Jika kosong, ubah menjadi "-"
+                    }
                     tr.appendChild(td);
                 });
                 tableBody.appendChild(tr);
-            });
+                });
+            }
 
             // Inisialisasi DataTable
             const table = $(`#${tableId}`).DataTable({
