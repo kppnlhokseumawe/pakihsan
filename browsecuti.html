@@ -212,7 +212,7 @@
                         <tbody>
                         <tr>
                         <td style="width: 401.217px;">
-                        <p><span style="font-weight: 400;">Kepala Kantor,</span></p>
+                        <p><span style="font-weight: 400;">${rowData?.[4] === 'LAP' || rowData?.[4] === 'LAM' ? 'Ka.Subbagian Umum' : 'Kepala Kantor'}</span></p>
                         </td>
                         <td style="width: 363.783px;">
                         <p><strong>&nbsp;</strong>Hormat Saya</p>
@@ -223,7 +223,7 @@
                         <p>&nbsp;</p>
                         <p>&nbsp;</p>
                         <p>&nbsp;</p>
-                        <p>${rowData?.[1] === 'LAP' || rowData?.[1] === 'LAM' ? 'Muhammad Yusrul Hana' : 'Kurniawan'}</p>
+                        <p>${rowData?.[4] === 'LAP' || rowData?.[4] === 'LAM' ? 'Muhammad Yusrul Hana' : 'Kurniawan'}</p>
                         </td>
                         <td style="width: 363.783px;">
                         <p>&nbsp;</p>
