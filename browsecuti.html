@@ -205,8 +205,8 @@
                          	<div class="column">: Jalan Merdeka No.47 Banda Sakti, Lhokseumawe</div>
                         </div>
                         
-                        <p><span style="font-weight: 400;">Dengan ini mengajukan Cuti Tahunan 2025 selama ${rowData?.[4] || '-'} hari kerja pada tanggal ${rowData?.[5] || '-'} dikarenakan ${rowData?.[7] || '-'}, selama menjalankan cuti tahunan alamat saya di ${rowData?.[6] || '-'}.</span></p>
-                        <p><span style="font-weight: 400;">Demikian permintaan cuti tahunan ini saya buat untuk dapat dipertimbangkan sebagaimana mestinya.</span></p>
+                        <p><span style="font-weight: 400;">Dengan ini mengajukan cuti/ijin selama ${rowData?.[4] || '-'} hari kerja pada tanggal ${rowData?.[5] || '-'} dikarenakan ${rowData?.[7] || '-'}, selama menjalankan cuti tahunan alamat saya di ${rowData?.[6] || '-'}.</span></p>
+                        <p><span style="font-weight: 400;">Demikian permintaan cuti/ijin ini dibuat untuk dapat dipertimbangkan sebagaimana mestinya.</span></p>
                         
                         <table style="width: 779px; height: 169px; border=none">
                         <tbody>
@@ -223,7 +223,7 @@
                         <p>&nbsp;</p>
                         <p>&nbsp;</p>
                         <p>&nbsp;</p>
-                        <p>Kurniawan</p>
+                        <p>${rowData?.[1] === 'LAP' || rowData?.[1] === 'LAM' ? 'Muhammad Yusrul Hana' : 'Kurniawan'}</p>
                         </td>
                         <td style="width: 363.783px;">
                         <p>&nbsp;</p>
