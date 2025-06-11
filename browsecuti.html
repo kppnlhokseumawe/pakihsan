@@ -207,17 +207,17 @@
                         
                         <p><span style="font-weight: 400;">Dengan ini mengajukan 
                         ${rowData?.[7]==='Sakit' || 
-                        rowData?.[4] === 'LAP' || rowData?.[4] === 'LAM' || rowData?.[4] === 'Ijin Meninggalkan Kantor' ?
+                        rowData?.[4] === 'LAP' || rowData?.[4] === 'LAM' || rowData?.[4] === 'Meninggalkan Kantor' ?
                         'Ijin' : 'Cuti Tahunan'
                         }
                         
                         selama ${rowData?.[4] || '-'} hari kerja pada tanggal ${rowData?.[5] || '-'} dikarenakan ${rowData?.[7] || '-'},  
-                        ${rowData?.[4] === 'LAP' || rowData?.[4] === 'LAM' || rowData?.[4] === 'Ijin Meninggalkan Kantor' ? '' : 'selama menjalankan cuti tahunan'}
+                        ${rowData?.[4] === 'LAP' || rowData?.[4] === 'LAM' || rowData?.[4] === 'Meninggalkan Kantor' ? '' : 'selama menjalankan cuti tahunan'}
                         alamat saya di ${rowData?.[6] || '-'}.</span></p>
                         <p><span style="font-weight: 400;">Demikian permintaan 
                        
                         ${rowData?.[7]==='Sakit' || 
-                        rowData?.[4] === 'LAP' || rowData?.[4] === 'LAM' || rowData?.[4] === 'Ijin Meninggalkan Kantor' ?
+                        rowData?.[4] === 'LAP' || rowData?.[4] === 'LAM' || rowData?.[4] === 'Meninggalkan Kantor' ?
                         'Ijin' : 'Cuti Tahunan'
                         }
                         
@@ -227,7 +227,8 @@
                         <tbody>
                         <tr>
                         <td style="width: 401.217px;">
-                        <p><span style="font-weight: 400;">${rowData?.[7]==='Sakit' || rowData?.[4] === 'LAP' || rowData?.[4] === 'LAM' || rowData?.[4] === 'Ijin Meninggalkan Kantor' ? 'Kasubbagian Umum' : 'Kepala Kantor'}</span></p>
+                        <p>Menyetujui, &nbsp;</p>
+                        <p><span style="font-weight: 400;">${rowData?.[7]==='Sakit' || rowData?.[4] === 'LAP' || rowData?.[4] === 'LAM' || rowData?.[4] === 'Meninggalkan Kantor' ? 'Kasubbagian Umum' : 'Kepala Kantor'}</span></p>
                         </td>
                         <td style="width: 363.783px;">
                         <p><strong>&nbsp;</strong>Hormat Saya</p>
@@ -238,7 +239,7 @@
                         <p>&nbsp;</p>
                         <p>&nbsp;</p>
                         <p>&nbsp;</p>
-                        <p>${rowData?.[7]==='Sakit' || rowData?.[4] === 'LAP' || rowData?.[4] === 'LAM' || rowData?.[4] === 'Ijin Meninggalkan Kantor' ? 'Muhammad Yusrul Hana' : 'Kurniawan'}</p>
+                        <p>${rowData?.[7]==='Sakit' || rowData?.[4] === 'LAP' || rowData?.[4] === 'LAM' || rowData?.[4] === 'Meninggalkan Kantor' ? 'Muhammad Yusrul Hana' : 'Kurniawan'}</p>
                         </td>
                         <td style="width: 363.783px;">
                         <p>&nbsp;</p>
@@ -253,7 +254,7 @@
                         <p><span style="font-weight: 400;">&nbsp;</span></p>
                         <p><span style="font-weight: 400;">Keterangan </span></p>
                         <p><span style="font-weight: 400;">&nbsp;</span></p>
-                        <p><span style="font-weight: 400;">LAP : Lupa Absen Masuk </span></p>
+                        <p><span style="font-weight: 400;">LAM : Lupa Absen Masuk </span></p>
                         <p><span style="font-weight: 400;">LAP : Lupa Absen Pulang </span></p>
                         `);
             newWindow.document.close();
