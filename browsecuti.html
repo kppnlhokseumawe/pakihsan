@@ -227,7 +227,7 @@
                         <tbody>
                         <tr>
                         <td style="width: 401.217px;">
-                        <p><span style="font-weight: 400;">${rowData?.[4] === 'LAP' || rowData?.[4] === 'LAM' || rowData?.[4] === 'Ijin Meninggalkan Kantor' ? 'Kasubbagian Umum' : 'Kepala Kantor'}</span></p>
+                        <p><span style="font-weight: 400;">${rowData?.[7]==='Sakit' || rowData?.[4] === 'LAP' || rowData?.[4] === 'LAM' || rowData?.[4] === 'Ijin Meninggalkan Kantor' ? 'Kasubbagian Umum' : 'Kepala Kantor'}</span></p>
                         </td>
                         <td style="width: 363.783px;">
                         <p><strong>&nbsp;</strong>Hormat Saya</p>
@@ -238,7 +238,7 @@
                         <p>&nbsp;</p>
                         <p>&nbsp;</p>
                         <p>&nbsp;</p>
-                        <p>${rowData?.[4] === 'LAP' || rowData?.[4] === 'LAM' || rowData?.[4] === 'Ijin Meninggalkan Kantor' ? 'Muhammad Yusrul Hana' : 'Kurniawan'}</p>
+                        <p>${rowData?.[7]==='Sakit' || rowData?.[4] === 'LAP' || rowData?.[4] === 'LAM' || rowData?.[4] === 'Ijin Meninggalkan Kantor' ? 'Muhammad Yusrul Hana' : 'Kurniawan'}</p>
                         </td>
                         <td style="width: 363.783px;">
                         <p>&nbsp;</p>
@@ -251,8 +251,7 @@
                         </table>
                         <p><span style="font-weight: 400;">&nbsp;</span></p>
                         <p><span style="font-weight: 400;">&nbsp;</span></p>
-                        <p><span style="font-weight: 400;">Tembusan :&nbsp;</span></p>
-                        <p><span style="font-weight: 400;">Kepala Subbag Umum</span></p>
+              
                         `);
             newWindow.document.close();
         }       
