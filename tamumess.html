@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buku Tamu Mess</title>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <style> body { font-family: Arial }</style>
+</head>
+<body>
+    <h1>Monitoring Ijin Menginap Mess</h1>
+	<h3>Untuk formulir menginap dapat diisi melalui link berikut : <a href="http://s.kemenkeu.go.id/IjinInapMessKppnLhokseumawe"> http://s.kemenkeu.go.id/IjinInapMessKppnLhokseumawe </a> </h3>
+    <input type="text" id="table-filter" placeholder="Cari di tabel..." style="margin-bottom: 10px; padding: 5px; width: 100%;">
+    <table id="data-table" class="display" style="width:100%">
+        <thead>
+            <tr id="table-header"></tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+    </table>
+
+    <script>
+        const spreadsheetId = "1hfX52IBkFnMoIBJg3za5nsIL2BM9PnHys9nGIw5tw0U";
+        const apiKey = "AIzaSyAkeRjFXNe9Tm5bBMCppS4hFLdengV7Q0M";
+        const sheetName = "Daftar Tamu";
+        const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?key=${apiKey}`;
+
+        async function fetchGoogleSheet() {
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error("Gagal mengambil data.");
+                }
+                const data = await response.json();
+                renderTable(data.values || []);
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+
+        function formatTimestamp(timestamp) {
+            if (!timestamp) return "-"; // Jika timestamp kosong, kembalikan "-"
+        
+            // Pisahkan tanggal dan waktu
+            const [datePart, timePart] = timestamp.split(" ");
+            if (!datePart || !timePart) return "-"; // Jika format tidak valid, kembalikan "-"
+        
+            // Pisahkan komponen tanggal
+            const [month, day, year] = datePart.split("/");
+            if (!month || !day || !year) return "-"; // Jika format tanggal tidak valid, kembalikan "-"
+        
+            // Handle tahun 2 digit (misalnya, '25' -> 2025)
+            const fullYear = year.length === 2 ? `20${year}` : year;
+        
+            // Pisahkan komponen waktu
+            const [hours, minutes, seconds] = timePart.split(":");
+            if (!hours || !minutes || !seconds) return "-"; // Jika format waktu tidak valid, kembalikan "-"
+        
+            // Padding jam, menit, dan detik dengan 0 jika hanya 1 digit
+            const paddedHours = hours.padStart(2, '0');
+            const paddedMinutes = minutes.padStart(2, '0');
+            const paddedSeconds = seconds.padStart(2, '0');
+        
+            // Buat objek Date untuk memastikan validitas tanggal dan waktu
+            const date = new Date(`${fullYear}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${paddedHours}:${paddedMinutes}:${paddedSeconds}Z`);
+            if (isNaN(date.getTime())) return "-"; // Jika tanggal tidak valid, kembalikan "-"
+        
+            // Format ke YYYYMMDDHHmmssSSS
+            return (
+                date.getFullYear() +
+                String(date.getMonth() + 1).padStart(2, '0') + // Bulan dimulai dari 0
+                String(date.getDate()).padStart(2, '0') +
+                paddedHours + // Jam yang sudah di-padding
+                paddedMinutes + // Menit yang sudah di-padding
+                paddedSeconds
+            );
+        }
+
+        function renderTable(data) {
+            if (!data || data.length === 0) {
+                console.warn("Tidak ada data untuk dirender.");
+                return;
+            }
+
+            const header = data[0];
+            const body = data.slice(1);
+
+            const headerRow = document.getElementById("table-header");
+            header.forEach(cell => {
+                const th = document.createElement("th");
+                th.textContent = cell || "-";
+                headerRow.appendChild(th);
+            });
+
+            const actionTh = document.createElement("th");
+            actionTh.textContent = "Aksi";
+            headerRow.appendChild(actionTh);
+
+            const tableBody = document.getElementById("table-body");
+            body.forEach((row, rowIndex) => {
+                if (!row || row.length === 0) return; // Pastikan row ada dan memiliki elemen
+
+                const tr = document.createElement("tr");
+                row.forEach((cell, cellIndex) => {
+                    const td = document.createElement("td");
+                    if (cellIndex === 0) { // Kolom pertama adalah timestamp
+                        td.textContent = formatTimestamp(cell); // Gunakan hasil formatTimestamp
+                    } else {
+                        td.textContent = cell ? cell : "-"; // Jika kosong, ubah menjadi "-"
+                    }
+                    tr.appendChild(td);
+                });
+
+                const actionTd = document.createElement("td");
+                const approvalStatus = row[row.length - 1] ? row[row.length - 1].trim() : "-"; // Ambil status persetujuan
+                if (approvalStatus === "Ya") {
+                    actionTd.innerHTML = `<button class="crud-btn btn-edit" onclick="viewRow(${rowIndex})">Cetak</button>`;
+                } else {
+                    actionTd.textContent = ""; // Tetap tambahkan kolom aksi agar tabel tetap rapi
+                }
+                tr.appendChild(actionTd);
+                tableBody.appendChild(tr);
+            });
+
+            // Inisialisasi DataTables setelah tabel selesai dirender
+            const table = $('#data-table').DataTable({
+                paging: true,
+                searching: true,
+                info: true,
+                order: [[0, 'desc']],
+                dom: 'lrtip'
+            });
+
+            $('#table-filter').on('keyup', function () {
+                table.search(this.value).draw();
+            });
+        }
+
+        function konversiTanggal(tanggal) {
+    	    const bulanDict = {
+    	        "1": "Januari", "2": "Februari", "3": "Maret", "4": "April",
+    	        "5": "Mei", "6": "Juni", "7": "Juli", "8": "Agustus",
+    	        "9": "September", "10": "Oktober", "11": "November", "12": "Desember"
+    	    };
+    	    const [bulan, hari, tahun] = tanggal.split("/");
+    	    return `${parseInt(hari)} ${bulanDict[bulan]} ${tahun}`;
+    	} 
+		function konversiTahun(tanggal) {
+		const [bulan, hari, tahun] = tanggal.split("/");
+		return `${tahun}`;
+		}
+
+    function viewRow(rowIndex, isDelete = false) {
+    const table = $('#data-table').DataTable();
+    const rowData = table.row(rowIndex).data();
+    const cekin = konversiTanggal(rowData?.[8] || '-');
+	const cekout = konversiTanggal(rowData?.[9] || '-');
+	const thn = konversiTahun(rowData?.[8] || '-');
+    const newWindow = window.open('', '_blank');
+	newWindow.document.write(`
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Surat Izin Pemakaian BMN</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 40px;
+    }
+    .kop {
+      text-align: center;
+      margin-bottom: 3px;
+    }
+    .kop img {
+      max-width: 100%;
+      height: auto;
+    }
+    
+    .section {
+      margin-top: 10px;
+    }
+    .indent {
+      margin-left: 20px;
+    }
+	
+	.container {
+            			  display: grid;
+            			  grid-template-columns: repeat(3, 1fr);
+            			  gap: 5px; /* Jarak antara kolom */
+            			}
+            			.column1 {
+            			  padding: 1px; 
+                 			  column-width: 120px;	
+            			}
+						.column2 {
+            			  padding: 1px; 
+                 			  column-width: 300px;	
+            			}
+               			.column {
+            			  padding: 1px; 
+                 			  column-width: 600px;	
+            			}
+  </style>
+</head>
+<body>
+  <div class="kop">
+    <img src="kop.png" alt="Kop Surat Kemenkeu">
+  </div>
+  <h3 style="text-align:center;">SURAT IZIN PEMAKAIAN BARANG MILIK NEGARA<br>MESS KPPN LHOKSEUMAWE</h3>
+  <p style="text-align:center;">Nomor : ${rowData?.[0] || '-'}/KPN.0102/${thn}</p>
+
+  <div class="section">
+    <p>Dalam rangka tertib penggunaan Asset Barang Milik Negara, dengan ini menerangkan:</p>
+
+     <div class="container">
+                        	<div class="column1">Nama</div>
+                         	<div class="column">: ${rowData?.[1] || '-'}</div>
+                        </div>
+                        <div class="container">
+                        	<div class="column1">NIP</div>
+                         	<div class="column">: ${rowData?.[2] || '-'}</div>
+                        </div>
+                        <div class="container">
+                        	<div class="column1">Jabatan</div>
+                         	<div class="column">: ${rowData?.[4] || '-'}</div>
+                        </div>
+                        <div class="container">
+                        	<div class="column1">Nomor HP</div>
+                         	<div class="column">: ${rowData?.[3] || '-'}</div>
+                        </div>
+	
+    <p style="text-align:center; font-weight: bold;">D I I Z I N K A N</p>
+
+    <p>Untuk memakai unit Barang Milik Negara yaitu ${rowData?.[6] || '-'} Kamar Mess Tamu KPPN Lhokseumawe yang diperuntukkan untuk dan atas nama ${rowData?.[1] || '-'}, keperluan ${rowData?.[5] || '-'} dari ${cekin} sampai dengan ${cekout}. Adapun jumlah orang yang menginap selama periode tersebut adalah ${rowData?.[7] || '-'} orang.</p>
+  </div>
+
+  <div class="section">
+    <p><strong>Ketentuan yang harus ditaati oleh penghuni selama periode menginap:</strong></p>
+    <ol>
+      <li>Izin bersifat sementara dan akan disesuaikan dengan kepentingan dinas dan penugasan pegawai yang bersangkutan;</li>
+      <li>BMN hanya untuk keperluan dinas/tugas, dan tidak dipakai untuk acara pribadi kecuali atas pertimbangan khusus Kepala Kantor;</li>
+      <li>Pengguna Mess tidak dipungut biaya, kecuali biaya operasional pribadi (listrik, air, kebersihan, dll);</li>
+      <li>Pengguna bertanggung jawab atas perawatan, kerusakan, dan kehilangan, serta bersedia dikenakan Tuntutan Ganti Rugi sesuai ketentuan;</li>
+      <li>Pengguna wajib meninggalkan mess dalam keadaan rapi dan bersih, dan tidak meninggalkan barang pribadi. Sprei, selimut, dan sarung bantal harus dilaundry setelah check out atas biaya sendiri.</li>
+    </ol>
+    <p>Surat izin ini berlaku sejak tanggal ditandatanganinya surat ini.</p>
+  </div>
+
+  <div class="section" style="margin-top: 40px;">
+  <div class="container">
+  <div class="column2"> </div>
+  <div class="column">
+		 <p>Lhokseumawe, tanggal bulan tahun</p>
+    <p>Kepala Kantor Pelayanan Perbendaharaan Negara Tipe A1 Lhokseumawe</p>
+    <br><br><br><br>
+    <em>Ditandatangani secara elektronik</em></>
+    <p><strong>Kurniawan</strong></p>
+   
+		</div>
+  </div>
+   
+    <hr>
+    <p style="font-size: 0.6em; color: gray;">Formulir ini dicetak otomatis dan tidak memerlukan tanda tangan dan cap dinas basah</p>
+  </div>
+</body>
+</html>
+
+                `);
+            newWindow.document.close();
+
+   
+}
+
+
+        fetchGoogleSheet();
+    </script>
+</body>
+</html>
