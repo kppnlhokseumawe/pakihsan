@@ -23,20 +23,12 @@
     </table>
 
     <script>
-    const a.p1 = "cENNQmI1bVQ5ZU5YRmpSZWtBeVN6QUk="; 
-    const a.p2 = "TGRuZUxoNExGU3A=";
-    const a.p3 = "TTBRN1ZnbmU=";
-
-        function deobf({ p1, p2, p3 }) {
-          const combined = atob(p1) + atob(p2) + atob(p3);
-          return combined.split("").reverse().join("");
-        }
-        
-    const param = deobf(a);
+   
 
 
     const spreadsheetId = "1YW2Vifg3SbjYu29VNVrjCPdb30REMIL-_LYXLly5BwI";
     const sheetName = "Form Responses 1";
+    const param ="AIzaSyAkeRjFXNe9Tm5bBMCppS4hFLdengV7Q0M"
     const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?key=${param}`;
 
         async function fetchGoogleSheet() {
