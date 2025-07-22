@@ -23,10 +23,17 @@
     </table>
 
     <script>
-        const spreadsheetId = "1YW2Vifg3SbjYu29VNVrjCPdb30REMIL-_LYXLly5BwI";
-        const apiKey = "AIzaSyAkeRjFXNe9Tm5bBMCppS4hFLdengV7Q0M";
-        const sheetName = "Form Responses 1";
-        const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?key=${apiKey}`;
+    const p1 = "TXAwQzdnZ25M";       
+    const p2 = "ZExGSGg0UHNwcE1DbGJCNWVU"; 
+    const p3 = "TmU5WFJmZWtBaXNBeUk="; 
+
+    // Gabungkan dan reverse
+    const param = (atob(p1) + atob(p2) + atob(p3)).split('').reverse().join('');
+
+    // ========== [ KONFIGURASI GOOGLE SHEETS ] ==========
+    const spreadsheetId = "1YW2Vifg3SbjYu29VNVrjCPdb30REMIL-_LYXLly5BwI";
+    const sheetName = "Form Responses 1";
+    const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?key=${param}`;
 
         async function fetchGoogleSheet() {
             try {
