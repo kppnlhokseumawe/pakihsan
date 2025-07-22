@@ -22,6 +22,29 @@
         <tbody id="table-body"></tbody>
     </table>
 
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+  function dess(x) {
+    return JSON.parse(atob(x));
+  }
+
+  const sss = 'eyJhcGlLZXkiOiJBSXphU3lCUTNoYU9uT3laMTJvOFFpNFhDYms5WVQ3UUNoZXpGdWciLCJhdXRoRG9tYWluIjoic2VsYXJhcy05ZDQxOC5maXJlYmFzZWFwcC5jb20iLCJwcm9qZWN0SWQiOiJzZWxhcmFzLTlkNDE4Iiwic3RvcmFnZUJ1Y2tldCI6InNlbGFyYXMtOWQ0MTguYXBwc3BvdC5jb20iLCJtZXNzYWdpbmdTZW5kZXJJZCI6IjQ3ODY3NzQ0ODQ2MyIsImFwcElkIjoiMTo0Nzg2Nzc0NDg0NjM6d2ViOjkzMzFhMzZkN2YxNzRjOGViOWYwN2EifQ==';
+  const config = dess(sss);
+  const app = initializeApp(config);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      // Jika tidak login, redirect ke halaman login
+      window.top.location.href = '/'; // balik ke parent login
+    } else {
+      console.log("User is logged in:", user.email);
+    }
+  });
+</script>
+    
     <script>
    
 
