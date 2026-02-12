@@ -84,7 +84,7 @@
                     throw new Error("Gagal mengambil data.");
                 }
                 const data = await response.json();
-                renderTable(data.values || [], "table-header", "table-body", "data-table", "table-filter");
+                renderTable(data.values || [], "table-header", "table-body", "data-table", "table-filter",4);
             } catch (error) {
                 console.error("Error:", error);
             }
@@ -98,7 +98,7 @@
                     throw new Error("Gagal mengambil data.");
                 }
                 const data = await response.json();
-                renderTable(data.values || [], "table-header2", "table-body2", "data-table2", "table-filter2");
+                renderTable(data.values || [], "table-header2", "table-body2", "data-table2", "table-filter2",0);
             } catch (error) {
                 console.error("Error:", error);
             }
@@ -142,7 +142,7 @@
             );
         }
         // Fungsi generik untuk render tabel (bisa dipakai untuk kedua tabel)
-        function renderTable(data, headerId, bodyId, tableId, filterId) {
+        function renderTable(data, headerId, bodyId, tableId, filterId, short) {
             if (!data || data.length === 0) {
                 console.warn("Tidak ada data untuk dirender.");
                 return;
@@ -193,7 +193,7 @@
                 paging: true,
                 searching: true,
                 info: true,
-                order: [[0, 'desc']],
+                order: [[short, 'desc']],
                 destroy: true, // Pastikan DataTable tidak duplikat saat refresh data
                 dom: 'lrtip'
             });
